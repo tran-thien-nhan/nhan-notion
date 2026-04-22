@@ -107,56 +107,7 @@ export default function NoteEditor({ note, onSave, onClose }: NoteEditorProps) {
               />
             </div>
 
-            {/* Tags Section */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
-                <TagIcon size={16} />
-                Tags
-              </label>
 
-              {/* Selected tags display */}
-              {selectedTags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {selectedTags.map(tag => {
-                    const tagObj = availableTags.find(t => t.name === tag);
-                    return (
-                      <div
-                        key={tag}
-                        className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm"
-                        style={{
-                          backgroundColor: tagObj?.color ? `${tagObj.color}30` : '#8B5CF630',
-                          color: tagObj?.color || '#8B5CF6'
-                        }}
-                      >
-                        <div
-                          className="w-2 h-2 rounded-full"
-                          style={{ backgroundColor: tagObj?.color || '#8B5CF6' }}
-                        />
-                        {tag}
-                        <button
-                          onClick={() => removeTag(tag)}
-                          className="ml-2 hover:scale-110 transition-transform"
-                        >
-                          <X size={12} />
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Button to open tag modal */}
-              <button
-                onClick={() => setShowTagModal(true)}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-700/50 transition-all duration-200 flex items-center justify-between text-gray-300"
-              >
-                <span className="flex items-center gap-2">
-                  <TagIcon size={18} />
-                  {selectedTags.length > 0 ? `Đã chọn ${selectedTags.length} tags` : 'Chọn tags'}
-                </span>
-                <ChevronDown size={18} />
-              </button>
-            </div>
 
             {/* Content - Full width textarea */}
             <div>
@@ -175,6 +126,56 @@ export default function NoteEditor({ note, onSave, onClose }: NoteEditorProps) {
                 <span className="text-purple-400">💡</span> Gợi ý: Bạn có thể dùng Markdown để định dạng văn bản
               </p>
             </div>
+          </div>
+          {/* Tags Section */}
+          <div className='mb-2'>
+            <label className="block text-sm font-medium text-gray-300 m-2 flex items-center gap-2">
+              <TagIcon size={16} />
+              Tags
+            </label>
+
+            {/* Selected tags display */}
+            {selectedTags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-3">
+                {selectedTags.map(tag => {
+                  const tagObj = availableTags.find(t => t.name === tag);
+                  return (
+                    <div
+                      key={tag}
+                      className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm"
+                      style={{
+                        backgroundColor: tagObj?.color ? `${tagObj.color}30` : '#8B5CF630',
+                        color: tagObj?.color || '#8B5CF6'
+                      }}
+                    >
+                      <div
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: tagObj?.color || '#8B5CF6' }}
+                      />
+                      {tag}
+                      <button
+                        onClick={() => removeTag(tag)}
+                        className="ml-2 hover:scale-110 transition-transform"
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Button to open tag modal */}
+            <button
+              onClick={() => setShowTagModal(true)}
+              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-700/50 transition-all duration-200 flex items-center justify-between text-gray-300"
+            >
+              <span className="flex items-center gap-2">
+                <TagIcon size={18} />
+                {selectedTags.length > 0 ? `Đã chọn ${selectedTags.length} tags` : 'Chọn tags'}
+              </span>
+              <ChevronDown size={18} />
+            </button>
           </div>
         </div>
 
@@ -197,6 +198,7 @@ export default function NoteEditor({ note, onSave, onClose }: NoteEditorProps) {
       </div>
 
       {/* Tag Selection Modal (Small Modal) */}
+
       {showTagModal && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-md z-[60] flex items-center justify-center p-4">
           <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden shadow-2xl border border-gray-700">
