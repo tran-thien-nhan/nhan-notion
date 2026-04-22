@@ -12,9 +12,10 @@ interface NoteListProps {
     onDeleteNote: (id: string) => void;
     onTagClick?: (tag: string) => void;
     onTogglePin?: (id: string) => void;
+    onViewNote?: (note: Note) => void; // Thêm prop cho xem fullscreen
 }
 
-export default function NoteList({ notes, viewMode, onNewNote, onEditNote, onDeleteNote, onTagClick, onTogglePin }: NoteListProps) {
+export default function NoteList({ notes, viewMode, onNewNote, onEditNote, onDeleteNote, onTagClick, onTogglePin, onViewNote }: NoteListProps) {
     if (notes.length === 0) {
         return (
             <div className="text-center py-20 bg-gradient-to-br from-gray-800/30 to-gray-900/30 rounded-2xl backdrop-blur-sm border border-gray-700/50">
@@ -32,13 +33,11 @@ export default function NoteList({ notes, viewMode, onNewNote, onEditNote, onDel
         );
     }
 
-    // Tách riêng pinned (isPinned === 1) và unpinned notes (isPinned === 0)
     const pinnedNotes = notes.filter(note => note.isPinned === 1);
     const unpinnedNotes = notes.filter(note => note.isPinned !== 1);
 
     return (
         <div>
-            {/* Pinned Notes Section */}
             {pinnedNotes.length > 0 && (
                 <div className="mb-8">
                     <div className="flex items-center gap-2 mb-4">
@@ -58,13 +57,13 @@ export default function NoteList({ notes, viewMode, onNewNote, onEditNote, onDel
                                 onDelete={onDeleteNote}
                                 onTagClick={onTagClick}
                                 onTogglePin={onTogglePin}
+                                onView={onViewNote}
                             />
                         ))}
                     </div>
                 </div>
             )}
 
-            {/* Unpinned Notes Section */}
             {unpinnedNotes.length > 0 && (
                 <div>
                     {pinnedNotes.length > 0 && (
@@ -86,6 +85,7 @@ export default function NoteList({ notes, viewMode, onNewNote, onEditNote, onDel
                                 onDelete={onDeleteNote}
                                 onTagClick={onTagClick}
                                 onTogglePin={onTogglePin}
+                                onView={onViewNote}
                             />
                         ))}
                     </div>

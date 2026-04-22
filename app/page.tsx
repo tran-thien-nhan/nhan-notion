@@ -7,6 +7,7 @@ import TagFilter from './components/TagFilter';
 import TagCloud from './components/TagCloud';
 import { Note, Tag } from './types';
 import { Plus, LayoutGrid, LayoutList, Sparkles, Settings, X, RotateCcw } from 'lucide-react';
+import NoteViewer from './components/NoteViewer';
 
 export default function Home() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -18,6 +19,7 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showTagFilter, setShowTagFilter] = useState(false);
   const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [viewingNote, setViewingNote] = useState<Note | null>(null);
 
   const fetchNotes = useCallback(async () => {
     try {
@@ -135,6 +137,10 @@ export default function Home() {
 
   const removeTag = (tag: string) => {
     setSelectedTags(prev => prev.filter(t => t !== tag));
+  };
+
+  const handleViewNote = (note: Note) => {
+    setViewingNote(note);
   };
 
   if (loading) {
@@ -364,8 +370,38 @@ export default function Home() {
           onDeleteNote={handleDeleteNote}
           onTagClick={toggleTag}
           onTogglePin={handleTogglePin}
+          onViewNote={handleViewNote}
         />
       </div>
+
+      {/* Đưa NoteViewer ra ngoài - full màn hình */}
+      {viewingNote && (
+        <NoteViewer
+          note={viewingNote}
+          onClose={() => setViewingNote(null)}
+        />
+      )}
+
+      {isEditorOpen && (
+        <NoteEditor
+          note={editingNote}
+          onSave={handleSaveNote}
+          onClose={() => {
+            setIsEditorOpen(false);
+            setEditingNote(null);
+          }}
+        />
+      )}
+
+      {showTagFilter && (
+        <TagFilter
+          selectedTags={selectedTags}
+          onToggleTag={toggleTag}
+          onTagsChange={handleTagsChange}
+          onClose={() => setShowTagFilter(false)}
+          onReset={clearAllTags}
+        />
+      )}
 
       {isEditorOpen && (
         <NoteEditor

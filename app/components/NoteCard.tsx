@@ -3,7 +3,7 @@
 import { Note } from '@/app/types';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
-import { Calendar, Tag, Trash2, Edit2, FileText, Pin, PinOff, Star } from 'lucide-react';
+import { Calendar, Tag, Trash2, Edit2, FileText, Pin, PinOff, Star, Eye } from 'lucide-react';
 
 interface NoteCardProps {
     note: Note;
@@ -11,11 +11,12 @@ interface NoteCardProps {
     onDelete: (id: string) => void;
     onTagClick?: (tag: string) => void;
     onTogglePin?: (id: string) => void;
+    onView?: (note: Note) => void; // Thêm prop cho xem fullscreen
 }
 
-export default function NoteCard({ note, onEdit, onDelete, onTagClick, onTogglePin }: NoteCardProps) {
+export default function NoteCard({ note, onEdit, onDelete, onTagClick, onTogglePin, onView }: NoteCardProps) {
     const tags = note.tags.split(',').filter(tag => tag.trim());
-    const isPinned = note.isPinned === 1; // 1 = pinned, 0 = not pinned
+    const isPinned = note.isPinned === 1;
 
     return (
         <div 
@@ -53,6 +54,18 @@ export default function NoteCard({ note, onEdit, onDelete, onTagClick, onToggleP
                         </h3>
                     </div>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {onView && (
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onView(note);
+                                }}
+                                className="text-gray-400 hover:text-green-400 transition-colors p-1 rounded-lg hover:bg-gray-700/50"
+                                title="Xem toàn màn hình"
+                            >
+                                <Eye size={18} />
+                            </button>
+                        )}
                         {onTogglePin && (
                             <button
                                 onClick={(e) => {
