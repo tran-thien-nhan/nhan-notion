@@ -5,7 +5,11 @@ import { Tag } from "../../types";
 export async function GET() {
     try {
         const tags = await getAllTags();
-        return NextResponse.json(tags);
+        return NextResponse.json(tags, {
+            headers: {
+                'Cache-Control': 'no-store', // 👈 THÊM DÒNG NÀY
+            },
+        });
     } catch (error: any) {
         console.error("GET tags error:", error);
         return NextResponse.json(

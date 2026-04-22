@@ -21,7 +21,9 @@ export default function Home() {
 
   const fetchNotes = useCallback(async () => {
     try {
-      const response = await fetch('/api/notes');
+      const response = await fetch('/api/notes', {
+        cache: 'no-store', // 👈 QUAN TRỌNG
+      });
       const data = await response.json();
       setNotes(data);
       setFilteredNotes(data);
@@ -34,7 +36,9 @@ export default function Home() {
 
   const fetchTags = useCallback(async () => {
     try {
-      const response = await fetch('/api/tags');
+      const response = await fetch('/api/tags', {
+        cache: 'no-store', // 👈 QUAN TRỌNG
+      });
       const data = await response.json();
       setAllTags(data);
     } catch (error) {

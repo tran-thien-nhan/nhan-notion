@@ -5,7 +5,11 @@ import { Note } from "../../types";
 export async function GET() {
     try {
         const notes = await getAllNotes();
-        return NextResponse.json(notes);
+        return NextResponse.json(notes, {
+            headers: {
+                'Cache-Control': 'no-store', // 👈 THÊM DÒNG NÀY
+            },
+        });
     } catch (error: any) {
         console.error("GET error:", error);
         return NextResponse.json(
